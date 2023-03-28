@@ -49,7 +49,7 @@ describe('Testing login controller', () => {
       Sinon.stub(bycrypt, 'compareSync').returns(false);
       const response: Response = await chai.request(app).post('/login').send(login);
       expect(response.status).to.be.equal(401);
-      expect(response.body).to.be.deep.equal({ message: 'Incorrect email or password' });
+      expect(response.body).to.be.deep.equal({ message: 'Invalid email or password' });
     });
   });
 });

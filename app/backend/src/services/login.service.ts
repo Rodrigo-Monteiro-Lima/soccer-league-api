@@ -23,7 +23,7 @@ export default class LoginService implements IServiceLogin {
     const { email, password } = login;
     const user = await this.#model.findOne({ where: { email }, raw: true });
     if (!user || !compareSync(password, user.password)) {
-      throw new UnauthorizedExeception('Incorrect email or password');
+      throw new UnauthorizedExeception('Invalid email or password');
     }
     const { password: _, ...rest } = user;
     const token = await this.#token.generateToken({ ...rest });

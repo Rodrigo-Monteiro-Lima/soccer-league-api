@@ -17,5 +17,6 @@ matchRoutes.get('/', matchController.getAll);
 matchRoutes.use(auth);
 matchRoutes.patch('/:id/finish', matchController.updateToFinished);
 matchRoutes.patch('/:id', matchController.update);
+matchRoutes.post('/', matchController.create);
 
 export default matchRoutes;

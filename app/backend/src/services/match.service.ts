@@ -4,7 +4,7 @@ import StatusCodes from '../utils/statusCode';
 import Match from '../database/models/match.model';
 import Team from '../database/models/team.model';
 import IServiceMatch from '../interfaces/serviceMatch.interface';
-import { IMatch, IMatchValidation } from '../interfaces/match.interface';
+import { IMatch, IMatchValidation, INewMatch } from '../interfaces/match.interface';
 
 export default class MatchService implements IServiceMatch {
   #model: ModelStatic<Match>;
@@ -44,7 +44,16 @@ export default class MatchService implements IServiceMatch {
     const idExists = await this.#model.findByPk(id, { raw: true });
     if (!idExists) throw new NotFoundException('Match not found');
     await this.#model.update(updateMatch, { where: { id } });
-    console.log(idExists, updateMatch);
     return { status: StatusCodes.OK, match: { ...idExists, ...updateMatch } as Match };
+  };
+
+  create = async (newMatch: INewMatch) => {
+    this.#validations.validateCreateMatch(newMatch);
+    const { awayTeamId, homeTeamId } = newMatch;
+    const homeTeam = await this.#teamModel.findByPk(homeTeamId);
+    const awayTeam = await this.#teamModel.findByPk(awayTeamId);
+    if (!homeTeam || !awayTeam) throw new NotFoundException('There is no team with such id!');
+    const match = await this.#model.create({ ...newMatch, inProgress: true });
+    return { status: StatusCodes.CREATED, match };
   };
 }

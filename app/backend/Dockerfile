@@ -8,7 +8,7 @@ RUN npm install
 
 EXPOSE 3001
 
-COPY . .
+COPY ./ ./
 
 ENTRYPOINT [ "npm", "run" ]
 

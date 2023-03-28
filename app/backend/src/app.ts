@@ -1,14 +1,15 @@
 import * as express from 'express';
 import 'express-async-errors';
+import * as cors from 'cors';
+import teamRoutes from './routes/team.route';
 
 class App {
   public app: express.Express;
 
   constructor() {
     this.app = express();
-
     this.config();
-
+    this.initRoutes();
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
   }
@@ -23,6 +24,11 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
+    this.app.use(cors());
+  }
+
+  private initRoutes(): void {
+    this.app.use('/teams', teamRoutes);
   }
 
   public start(PORT: string | number):void {

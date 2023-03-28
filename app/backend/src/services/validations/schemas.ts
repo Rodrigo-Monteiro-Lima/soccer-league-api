@@ -10,4 +10,12 @@ const loginSchema = Joi.object({
   'string.email': 'Invalid email or password',
 }).required();
 
-export default loginSchema;
+const updateMatchSchema = Joi.object({
+  homeTeamGoals: Joi.number().integer().positive().required(),
+  awayTeamGoals: Joi.number().integer().positive().required(),
+});
+
+export {
+  loginSchema,
+  updateMatchSchema,
+};

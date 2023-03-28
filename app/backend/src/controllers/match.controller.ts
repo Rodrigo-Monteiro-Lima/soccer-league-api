@@ -1,4 +1,5 @@
-import { RequestHandler } from 'express';
+import { Request, RequestHandler, Response } from 'express';
+import { IMatch } from '../interfaces/match.interface';
 import IServiceMatch from '../interfaces/serviceMatch.interface';
 import StatusCodes from '../utils/statusCode';
 
@@ -19,5 +20,15 @@ export default class MatchController {
     const { id } = req.params;
     const { message, status } = await this.#service.updateToFinished(id);
     return res.status(status).json({ message });
+  };
+
+  update = async (
+    req: Request<{ id: string },
+    object, IMatch>,
+    res: Response,
+  ) => {
+    const { params: { id }, body } = req;
+    const { match, status } = await this.#service.update(id, body);
+    return res.status(status).json(match);
   };
 }

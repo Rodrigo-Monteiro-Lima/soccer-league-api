@@ -4,6 +4,7 @@ import * as cors from 'cors';
 import teamRoutes from './routes/team.route';
 import ErrorHandler from './middlewares/errorHandler.middleware';
 import loginRoutes from './routes/login.route';
+import matchRoutes from './routes/matchRoute';
 
 class App {
   public app: express.Express;
@@ -33,6 +34,7 @@ class App {
   private initRoutes(): void {
     this.app.use('/teams', teamRoutes);
     this.app.use('/login', loginRoutes);
+    this.app.use('/matches', matchRoutes);
   }
 
   private initMiddlewares() {

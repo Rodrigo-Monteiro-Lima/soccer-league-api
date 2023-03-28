@@ -10,9 +10,11 @@ import { app } from '../app';
 import User from '../database/models/user.model'
 import Token from '../utils/jwt'
 import * as bycrypt from "bcryptjs";
-import { login, loginWithInvalidEmail, loginWithInvalidPassword, user, userWithIncorrectPassword } from './login.mock';
+import { login, loginWithInvalidEmail, loginWithInvalidPassword, tkn, user, userFromToken, userWithIncorrectPassword } from './mocks/login.mock';
+import AuthMiddleware from '../middlewares/auth.middleware';
 
 const token = new Token();
+const auth = new AuthMiddleware(token);
 
 describe('Testing login controller', () => {
   afterEach(() => {
@@ -52,4 +54,28 @@ describe('Testing login controller', () => {
       expect(response.body).to.be.deep.equal({ message: 'Invalid email or password' });
     });
   });
+  describe('Returns an error on token validation', function () {
+    it('When a token is not passed', async function () {
+      const response: Response = await chai.request(app).get('/login/role');
+      expect(response.status).to.be.equal(401);
+      expect(response.body).to.be.deep.equal({ message: 'Token not found' });
+    });
+    it('when the token is invalid', async function () {
+      Sinon.stub(auth, 'auth').resolves();
+      Sinon.stub(token, 'authToken').resolves(userFromToken);
+      const response: Response = await chai.request(app).get('/login/role')
+        .set({ Authorization: `${tkn}` })
+      expect(response.status).to.be.equal(401);
+      expect(response.body).to.be.deep.equal({ message: 'Token must be a valid token' });
+    })
+  })
+  describe('Returns the role', function () {
+    it('When a valid token is passed', async function () {
+      Sinon.stub(token, 'authToken').resolves(userFromToken);
+      Sinon.stub(jwt, 'verify').resolves(userFromToken);
+      const response: Response = await chai.request(app).get('/login/role').auth(tkn, { type: 'bearer' });
+      expect(response.status).to.be.equal(200);
+      expect(response.body).to.be.deep.equal({ role: 'admin' });
+    });
+  })
 });

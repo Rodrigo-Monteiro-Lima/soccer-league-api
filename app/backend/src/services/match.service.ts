@@ -1,4 +1,6 @@
 import { ModelStatic } from 'sequelize';
+import NotFoundException from '../errors/NotFoundException';
+import StatusCodes from '../utils/statusCode';
 import Match from '../database/models/match.model';
 import Team from '../database/models/team.model';
 import IServiceMatch from '../interfaces/serviceMatch.interface';
@@ -21,5 +23,12 @@ export default class TeamService implements IServiceMatch {
     });
     if (inProgress) return matches.filter((m) => m.inProgress === JSON.parse(inProgress));
     return matches;
+  };
+
+  updateToFinished = async (id: string) => {
+    const idExists = await this.#model.findByPk(id);
+    if (!idExists) throw new NotFoundException('Match not found');
+    await this.#model.update({ inProgress: false }, { where: { id } });
+    return { status: StatusCodes.OK, message: 'Finished' };
   };
 }

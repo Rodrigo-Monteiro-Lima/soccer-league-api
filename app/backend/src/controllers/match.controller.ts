@@ -14,4 +14,10 @@ export default class MatchController {
     const matches = await this.#service.getAll(inProgress as string | undefined);
     res.status(StatusCodes.OK).json(matches);
   };
+
+  updateToFinished: RequestHandler = async (req, res) => {
+    const { id } = req.params;
+    const { message, status } = await this.#service.updateToFinished(id);
+    return res.status(status).json({ message });
+  };
 }

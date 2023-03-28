@@ -1,7 +1,7 @@
 import { ModelStatic } from 'sequelize';
 import StatusCodes from '../utils/statusCode';
 import Team from '../database/models/team.model';
-import { IServiceTeam } from '../interfaces/IServiceTeam';
+import { IServiceTeam } from '../interfaces/serviceTeam.interface';
 import NotFoundException from '../errors/NotFoundException';
 
 export default class TeamService implements IServiceTeam {

@@ -11,6 +11,6 @@ export interface IAuthToken extends IJwtPayload {
 }
 
 export interface IToken {
-  generateToken(p: IJwtPayload): string;
+  generateToken(p: IJwtPayload): Promise<string>;
   authToken(t: string): Promise<IAuthToken>
 }

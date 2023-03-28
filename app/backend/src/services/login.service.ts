@@ -26,7 +26,7 @@ export default class LoginService implements IServiceLogin {
       throw new UnauthorizedExeception('Incorrect email or password');
     }
     const { password: _, ...rest } = user;
-    const token = this.#token.generateToken({ ...rest });
+    const token = await this.#token.generateToken({ ...rest });
     return { status: StatusCodes.OK, token };
   };
 }

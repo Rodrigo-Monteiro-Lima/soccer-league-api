@@ -20,8 +20,9 @@ export default class Token implements IToken {
     };
   }
 
-  generateToken(payload: IJwtPayload) {
-    return this.#jwt.sign(payload, this.#secret, this.#options);
+  async generateToken(payload: IJwtPayload) {
+    const token = await this.#jwt.sign(payload, this.#secret, this.#options);
+    return token;
   }
 
   async authToken(token: string): Promise<IAuthToken> {

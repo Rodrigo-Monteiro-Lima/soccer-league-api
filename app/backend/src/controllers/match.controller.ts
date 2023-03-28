@@ -9,8 +9,9 @@ export default class MatchController {
     this.#service = service;
   }
 
-  getAll: RequestHandler = async (_req, res) => {
-    const matches = await this.#service.getAll();
+  getAll: RequestHandler = async (req, res) => {
+    const { inProgress } = req.query;
+    const matches = await this.#service.getAll(inProgress as string | undefined);
     res.status(StatusCodes.OK).json(matches);
   };
 }

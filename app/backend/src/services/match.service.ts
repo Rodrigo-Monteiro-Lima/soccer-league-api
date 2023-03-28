@@ -12,13 +12,14 @@ export default class TeamService implements IServiceMatch {
     this.#teamModel = teamModel;
   }
 
-  getAll = async (): Promise<Match[]> => {
+  getAll = async (inProgress: string | undefined): Promise<Match[]> => {
     const matches = await this.#model.findAll({
       include: [
         { model: this.#teamModel, as: 'homeTeam', attributes: { exclude: ['id'] } },
         { model: this.#teamModel, as: 'awayTeam', attributes: { exclude: ['id'] } },
       ],
     });
+    if (inProgress) return matches.filter((m) => m.inProgress === JSON.parse(inProgress));
     return matches;
   };
 }

@@ -19,9 +19,11 @@ export default class LeaderboardService implements IServiceLeaderboard {
     COUNT(*) AS totalGames, SUM(IF(m.home_team_goals > m.away_team_goals, 1, 0)) AS totalVictories,
     SUM(IF(m.home_team_goals = m.away_team_goals, 1, 0)) AS totalDraws,
     SUM(IF(m.home_team_goals < m.away_team_goals, 1, 0)) AS totalLosses,
-    SUM(home_team_goals) AS goalsFavor, SUM(away_team_goals) AS goalsOwn
+    SUM(home_team_goals) AS goalsFavor, SUM(away_team_goals) AS goalsOwn,
+    (SUM(home_team_goals) - SUM(away_team_goals)) AS goalsBalance
     FROM teams AS t JOIN matches AS m ON m.home_team_id = t.id 
-    AND m.in_progress IS FALSE GROUP BY name;
+    AND m.in_progress IS FALSE GROUP BY name 
+    ORDER BY totalPoints DESC, goalsBalance DESC, goalsFavor DESC;
     `) as TLeaderboard;
     // const leaderboard = await this.#teamModel.findAll({
     //   attributes: [[col('team_name'), 'name'], [
@@ -40,6 +42,10 @@ export default class LeaderboardService implements IServiceLeaderboard {
     //   include: [{model: Match, as: 'homeMatch', where: { in_progress: false },
     //   attributes: []}], // group: ['id']
     //   group: ['name'], raw: true });
-    return results;
+    const leaderboard = results.map((team) => {
+      const efficiency = ((team.totalPoints / (team.totalGames * 3)) * 100).toFixed(2);
+      return { ...team, efficiency };
+    });
+    return leaderboard;
   };
 }

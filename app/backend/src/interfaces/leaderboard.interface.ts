@@ -7,6 +7,8 @@ export default interface ILeaderboard {
   totalLosses: number,
   goalsFavor: number,
   goalsOwn: number,
+  goalsBalance: number,
+  efficiency: string,
 }
 
 export type TLeaderboard = [ILeaderboard[], unknown];

@@ -5,12 +5,12 @@ import { updateMatchSchema, newMatchSchema } from './schemas';
 export default class MatchValidations implements IMatchValidation {
   validateUpdateMatch = (match: IMatch) => {
     const { error } = updateMatchSchema.validate(match);
-    if (error) throw new UnprocessableContentExeception(error?.message);
+    if (error) throw new UnprocessableContentExeception(error.message as string);
   };
 
   validateCreateMatch = (match: INewMatch) => {
     const { error } = newMatchSchema.validate(match);
-    if (error) throw new UnprocessableContentExeception(error?.message);
+    if (error) throw new UnprocessableContentExeception(error.message as string);
     const { awayTeamId, homeTeamId } = match;
     if (awayTeamId === homeTeamId) {
       throw new UnprocessableContentExeception(

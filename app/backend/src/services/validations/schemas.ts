@@ -11,8 +11,8 @@ const loginSchema = Joi.object({
 }).required();
 
 const updateMatchSchema = Joi.object({
-  homeTeamGoals: Joi.number().integer().positive().required(),
-  awayTeamGoals: Joi.number().integer().positive().required(),
+  homeTeamGoals: Joi.number().integer().min(0).required(),
+  awayTeamGoals: Joi.number().integer().min(0).required(),
 });
 
 const newMatchSchema = Joi.object({

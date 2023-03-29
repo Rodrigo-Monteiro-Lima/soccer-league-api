@@ -8,6 +8,6 @@ export default class LoginValidation implements ILoginValidation {
     const { error } = loginSchema.validate(login);
     const isUnauthorized = error?.message.includes('Invalid');
     if (isUnauthorized) throw new UnauthorizedExeception(error?.message as string);
-    if (!isUnauthorized && error) throw new BadRequestException(error?.message as string);
+    if (!isUnauthorized && error) throw new BadRequestException(error.message as string);
   };
 }

@@ -1,29 +1,7 @@
 import ILeaderboard from "../../interfaces/leaderboard.interface";
 
-const resultWithoutSort = [
-  {
-    name: "Palmeiras",
-    totalPoints: 13,
-    totalGames: 5,
-    totalVictories: 4,
-    totalDraws: 1,
-    totalLosses: 0,
-    goalsFavor: 17,
-    goalsOwn: 5,
-  },
-  {
-    name: "Corinthians",
-    totalPoints: 12,
-    totalGames: 5,
-    totalVictories: 4,
-    totalDraws: 0,
-    totalLosses: 1,
-    goalsFavor: 12,
-    goalsOwn: 3,
-  }
-] as ILeaderboard[];
 
-const resultSorted = [
+const allResults = [
   {
     name: "Palmeiras",
     totalPoints: 13,
@@ -109,7 +87,6 @@ const metadata = {} as unknown;
 export {
   home,
   away,
-  resultWithoutSort,
-  resultSorted,
+  allResults,
   metadata
 }

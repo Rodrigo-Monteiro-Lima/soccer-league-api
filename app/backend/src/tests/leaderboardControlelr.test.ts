@@ -7,7 +7,7 @@ chai.use(chaiHttp);
 const { expect } = chai;
 import { app } from '../app';
 import sequelize from '../database/models';
-import { away, home, metadata, resultSorted, resultWithoutSort } from './mocks/leaderboard.mock';
+import { allResults, away, home, metadata } from './mocks/leaderboard.mock';
 
 describe('Testing leaderboard controller', () => {
   afterEach(() => {
@@ -31,10 +31,10 @@ describe('Testing leaderboard controller', () => {
   });
   describe('Listing teams leaderboard', function () {
     it('Should return status 200 and teams leaderboard list', async () => {
-      Sinon.stub(sequelize, 'query').resolves([resultWithoutSort, metadata]);
+      Sinon.stub(sequelize, 'query').resolves([allResults, metadata]);
       const response: Response = await chai.request(app).get('/leaderboard');
       expect(response.status).to.be.equal(200);
-      expect(response.body).to.be.deep.equal(resultSorted);
+      expect(response.body).to.be.deep.equal(allResults);
     });
   });
 });

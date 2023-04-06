@@ -39,7 +39,7 @@ SUM(CASE WHEN m.away_team_id = t.id THEN m.home_team_goals ELSE 0 END) AS goalsO
 SUM(CASE WHEN m.away_team_id = t.id THEN m.away_team_goals ELSE 0 END)) -
 (SUM(CASE WHEN m.home_team_id = t.id THEN m.away_team_goals ELSE 0 END) + 
 SUM(CASE WHEN m.away_team_id = t.id THEN m.home_team_goals ELSE 0 END))) as goalsBalance
-FROM TRYBE_FUTEBOL_CLUBE.teams t JOIN TRYBE_FUTEBOL_CLUBE.matches m 
+FROM teams t JOIN matches m 
 ON (t.id = m.home_team_id OR t.id = m.away_team_id) AND m.in_progress IS FALSE GROUP BY name
 ORDER BY totalPoints DESC, goalsBalance DESC, goalsFavor DESC;
 `;
